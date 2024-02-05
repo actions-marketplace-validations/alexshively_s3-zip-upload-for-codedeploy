@@ -1,6 +1,6 @@
 {
   "name": "s3-zip-upload",
-  "version": "1.2",
+  "version": "1.4",
   "description": "Upload a directory to S3 using GitHub actions.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NotCoffee418/s3-zip-upload.git"
+    "url": "git+https://github.com/alexshively/s3-zip-upload-for-codedeploy.git"
   },
   "keywords": [
     "s3",
@@ -22,9 +22,9 @@
   "author": "Stijn Raeymaekers",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NotCoffee418/s3-zip-upload/issues"
+    "url": "https://github.com/alexshively/s3-zip-upload-for-codedeploy/issues"
   },
-  "homepage": "https://github.com/NotCoffee418/s3-zip-upload#readme",
+  "homepage": "https://github.com/alexshively/s3-zip-upload-for-codedeploy#readme",
   "devDependencies": {
     "@actions/exec": "^1.1.1",
     "eslint": "^8.29.0",
