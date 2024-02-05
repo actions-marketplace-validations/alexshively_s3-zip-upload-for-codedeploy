@@ -65,6 +65,66 @@ jobs:
 ## Automatic CodeDeploy via Lambda example
 https://aws.amazon.com/blogs/devops/automatically-deploy-from-amazon-s3-using-aws-codedeploy/
 
+```js
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { S3Client, HeadObjectCommand } = require('@aws-sdk/client-s3');
+const { CodeDeployClient, CreateDeploymentCommand } = require('@aws-sdk/client-codedeploy');
+
+// Initialize the S3 and CodeDeploy clients
+const s3Client = new S3Client({ apiVersion: '2006-03-01' });
+const codedeployClient = new CodeDeployClient();
+
+export const handler = async(event, context) => {
+    console.log('Received event:');
+    console.log(JSON.stringify(event, null, '  '));
+
+    // Get the object from the event
+    const bucket = event.Records[0].s3.bucket.name;
+    const key = event.Records[0].s3.object.key;
+    let artifact_type = key.split('.').pop();
+    artifact_type = artifact_type === 'gz' ? 'tgz' : ['zip', 'tar', 'tgz'].includes(artifact_type) ? artifact_type : 'tar';
+
+    try {
+        const data = await s3Client.send(new HeadObjectCommand({
+            Bucket: bucket,
+            Key: key
+        }));
+        
+        await createDeployment(data);
+    } catch (err) {
+        console.error('Error', 'Error getting s3 object or creating deployment: ' + err);
+        return;
+    }
+
+    async function createDeployment(s3ObjectData) {
+         if (!s3ObjectData.Metadata['application-name'] || !s3ObjectData.Metadata['deploymentgroup-name']) {
+            throw new Error('application-name and deploymentgroup-name object metadata must be set.');
+         }
+
+        const params = {
+            applicationName: s3ObjectData.Metadata['application-name'],
+            deploymentGroupName: s3ObjectData.Metadata['deploymentgroup-name'],
+            description: 'Lambda invoked codedeploy deployment',
+            ignoreApplicationStopFailures: false,
+            revision: {
+                revisionType: 'S3',
+                s3Location: {
+                    bucket: bucket,
+                    bundleType: artifact_type,
+                    key: key
+                }
+            }
+        };
+
+        const createDeploymentCommand = new CreateDeploymentCommand(params);
+        const deploymentResponse = await codedeployClient.send(createDeploymentCommand);
+        console.log(deploymentResponse);
+        console.log('Finished executing lambda function');
+    }
+};
+```
+
 ## Manual action tests
 
 Copy .env.example to .env and modify it.
