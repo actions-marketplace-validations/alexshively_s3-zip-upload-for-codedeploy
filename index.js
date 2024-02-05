@@ -17,9 +17,11 @@ async function main () {
       BUCKET_NAME = null,
       AWS_SECRET_ID = null,
       AWS_SECRET_KEY = null,
-      AWS_REGION = 'eu-central-1',
+      AWS_REGION = 'us-east-2',
       S3_ENDPOINT = null,
       STORAGE_CLASS = 'STANDARD',
+      APPLICATION_NAME = null,
+      DEPLOYMENTGROUP_NAME = null,
       ZIP_PATH = path.join(os.tmpdir(), 'tmp.zip'),
       SOURCE_MODE = 'ZIP' // ZIP, FILE
     } = process.env
@@ -36,6 +38,8 @@ async function main () {
       if (!AWS_REGION) errorMessage += 'AWS_REGION '
       if (!ZIP_PATH) errorMessage += 'ZIP_PATH '
       if (!SOURCE_MODE) errorMessage += 'SOURCE_MODE '
+      if (!SOURCE_MODE) errorMessage += 'APPLICATION_NAME '
+      if (!SOURCE_MODE) errorMessage += 'DEPLOYMENTGROUP_NAME '
 
       throw new Error(errorMessage)
     }
@@ -121,6 +125,10 @@ async function main () {
       Body: readStream,
       Bucket: BUCKET_NAME,
       Key: DEST_FILE,
+      Metadata: {
+        'application-name': APPLICATION_NAME,
+        'deploymentgroup-name': DEPLOYMENTGROUP_NAME
+      },
       StorageClass: STORAGE_CLASS
     }
 
