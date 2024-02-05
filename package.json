@@ -1,7 +1,7 @@
 {
-  "name": "s3-zip-upload",
+  "name": "s3-zip-upload-for-codedeploy",
   "version": "1.4",
-  "description": "Upload a directory to S3 using GitHub actions.",
+  "description": "Upload a directory to S3 using GitHub actions and trigger a lambda for CodeDeploy.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
