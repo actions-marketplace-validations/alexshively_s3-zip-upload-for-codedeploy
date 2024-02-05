@@ -17,7 +17,9 @@
     "s3",
     "upload",
     "github",
-    "actions"
+    "actions",
+    "codedeploy",
+    "lambda"
   ],
   "author": "Stijn Raeymaekers",
   "license": "MIT",
