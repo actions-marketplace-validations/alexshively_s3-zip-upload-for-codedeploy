@@ -2,7 +2,8 @@
 
 A GitHub Action for easily creating a zip file from a folder and uploading it to S3.  
 This action can also be used to upload a pre-made zip file or any other single file.  
-It supports Linux, Windows, and any other `runs-on` that can run Node.
+It supports Linux, Windows, and any other `runs-on` that can run Node. It contains
+metadata fields which can be used to automatically deploy to codedeploy via a lambda.
 
 ## Features
 
@@ -17,13 +18,15 @@ All inputs are environment variables. See the example below for usage.
 
 ## Required Parameters
 
-| Parameter       | Description                  | Example                  |
-| --------------- | ---------------------------- | ------------------------ |
-| `AWS_SECRET_ID` | AWS access key ID            | `AKIAIOSFODNN7EXAMPLE`  |
-| `AWS_SECRET_KEY`| AWS secret access key        | `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY` |
-| `BUCKET_NAME`   | AWS bucket name              | `my-bucket`              |
-| `SOURCE_PATH`   | Source file or directory     | `/path/to/source`        |
-| `DEST_FILE`     | Output file name or path     | `destination-file.zip`   |
+| Parameter             | Description                  | Example                  |
+| --------------------- | ---------------------------- | ------------------------ |
+| `AWS_SECRET_ID`       | AWS access key ID            | `AKIAIOSFODNN7EXAMPLE`   |
+| `AWS_SECRET_KEY`      | AWS secret access key        | `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY` |
+| `BUCKET_NAME`         | AWS bucket name              | `my-bucket`              |
+| `SOURCE_PATH`         | Source file or directory     | `/path/to/source`        |
+| `DEST_FILE`           | Output file name or path     | `destination-file.zip`   |
+| `APPLICATION_NAME`    | Output file name or path     | `test`                   |
+| `DEPLOYMENTGROUP_NAME`| Output file name or path     | `dev`                    |
 
 ## Optional Parameters
 
@@ -46,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Upload ZIP to S3
-        uses: NotCoffee418/s3-zip-upload@v1.3
+        uses: alexshively/s3-zip-upload-for-codedeploy@v1.4
         env:
           AWS_SECRET_ID: ${{ secrets.AWS_SECRET_ID }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
@@ -55,7 +58,12 @@ jobs:
           SOURCE_MODE: ZIP
           SOURCE_PATH: ./debug-override
           DEST_FILE: debug-action.zip
+          APPLICATION_NAME: test
+          DEPLOYMENTGROUP_NAME: dev
 ```
+
+## Automatic CodeDeploy via Lambda example
+https://aws.amazon.com/blogs/devops/automatically-deploy-from-amazon-s3-using-aws-codedeploy/
 
 ## Manual action tests
 
