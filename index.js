@@ -38,8 +38,8 @@ async function main () {
       if (!AWS_REGION) errorMessage += 'AWS_REGION '
       if (!ZIP_PATH) errorMessage += 'ZIP_PATH '
       if (!SOURCE_MODE) errorMessage += 'SOURCE_MODE '
-      if (!SOURCE_MODE) errorMessage += 'APPLICATION_NAME '
-      if (!SOURCE_MODE) errorMessage += 'DEPLOYMENTGROUP_NAME '
+      if (!APPLICATION_NAME) errorMessage += 'APPLICATION_NAME '
+      if (!DEPLOYMENTGROUP_NAME) errorMessage += 'DEPLOYMENTGROUP_NAME '
 
       throw new Error(errorMessage)
     }
