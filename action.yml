@@ -1,4 +1,4 @@
-name: 'S3 Zip Upload'
+name: 'S3 Zip Upload for CodeDeploy'
 description: 'Creates a zip file and uploads it to S3, and can also upload individual files. It works on both Linux and Windows'
 author: 'Stijn Raeymaekers'
 repository: 'https://github.com/alexshively/s3-zip-upload-for-codedeploy'
